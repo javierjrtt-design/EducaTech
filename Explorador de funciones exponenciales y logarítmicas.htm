@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Funciones Exponenciales y Logarítmicas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F8F8; /* Claro */
+            color: #333333; /* Texto */
+        }
+
+        /* Paleta de colores M3 (Gemini) */
+        :root {
+            --color-principal: #35465C;     /* Oscuro */
+            --color-fondo-claro: #F8F8F8;
+            --color-panel: #FFFFFF;
+            --color-texto: #333333;
+            --color-texto-secundario: #555555;
+            
+            --color-acento-azul: #2196F3;
+            --color-acento-verde: #4CAF60;
+            --color-acento-rojo: #FF4436;
+            --color-acento-amarillo: #FFC107;
+            --color-linea-referencia: #BDBDBD; 
+        }
+
+        /* Estilo Material 3 */
+        .panel-card {
+            background-color: var(--color-panel);
+            border-radius: 24px; /* M3 Large */
+            box-shadow: 0 4px 12px 0 rgba(53, 70, 92, 0.1);
+            border: 1px solid #F0F0F0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .panel-card:hover {
+            box-shadow: 0 8px 20px 0 rgba(53, 70, 92, 0.15);
+        }
+
+        .stat-card {
+            background-color: #F8F8F8; /* Fondo claro */
+            border-radius: 16px; /* M3 Medium */
+            border: 1px solid #EEEEEE;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+             transform: translateY(-4px);
+             box-shadow: 0 6px 16px 0 rgba(53, 70, 92, 0.1);
+        }
+        
+        /* Estilos para los sliders interactivos */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #EEEEEE;
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.9;
+            transition: opacity .2s;
+        }
+        
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--color-acento-azul);
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--color-acento-azul);
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+
+<body class="antialiased leading-relaxed">
+
+    <div class="max-w-6xl mx-auto p-4 md:p-8">
+
+        <!-- Encabezado -->
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[--color-principal] mb-3">
+                🧭 Explorador de funciones
+            </h1>
+            <h2 class="text-xl md:text-2xl font-light text-[--color-texto-secundario]">
+                Una guía interactiva de exponenciales y logarítmos
+            </h2>
+            <p class="text-lg text-center max-w-3xl mx-auto mt-4 text-[--color-texto-secundario]">
+                🎯 Esta herramienta interactiva está diseñada para ayudarte a visualizar y entender los conceptos clave de las funciones exponenciales y logarítmicas. Manipula las gráficas, ajusta los parámetros y explora cómo cambian sus propiedades en tiempo real.
+            </p>
+        </header>
+
+        <main class="space-y-12 md:space-y-16">
+
+            <!-- Sección 1: Función Exponencial Interactiva -->
+            <section class="panel-card p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Columna de Gráfico -->
+                <div class="order-1 lg:order-2">
+                    <div class="relative w-full h-80 md:h-96">
+                        <canvas id="exponentialChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Columna de Texto -->
+                <div class="order-2 lg:order-1">
+                    <h2 class="text-3xl font-bold text-[--color-principal] mb-4">📈 La función exponencial</h2>
+                    <p class="text-lg font-normal text-[--color-texto-secundario] mb-6">
+                        La función exponencial, \( f(x) = a^x \), es el pilar del crecimiento y decrecimiento. Su forma cambia drásticamente dependiendo del valor de su base \( a \).
+                    </p>
+                    
+                    <!-- Slider Interactivo -->
+                    <div class="mb-6">
+                        <label for="baseSlider" class="block text-sm font-medium text-[--color-principal] mb-2">Ajusta la base \( a \):</label>
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs font-mono text-gray-500">0.1</span>
+                            <input type="range" id="baseSlider" min="0.1" max="5" value="2" step="0.1" class="w-full">
+                            <span class="text-xs font-mono text-gray-500">5.0</span>
+                        </div>
+                        <p class="text-center text-2xl font-bold text-[--color-principal] mt-3" id="baseFormulaContainer">
+                            \( f(x) = 2.0^x \)
+                        </p>
+                    </div>
+                    
+                    <p id="chartDescription" class="text-base font-medium p-4 bg-[--color-fondo-claro] rounded-lg text-[--color-texto-secundario]">
+                        Con \( a = 2 \), la función es creciente (crecimiento exponencial).
+                    </p>
+                </div>
+            </section>
+            
+            <!-- Sección 2: Propiedades Clave -->
+            <section>
+                <h3 class="text-2xl font-bold text-center text-[--color-principal] mb-6">🔑 Propiedades clave de \( f(x) = a^x \)</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    <div class="stat-card p-5 text-center transition-all duration-300">
+                        <h4 class="text-lg font-semibold text-[--color-principal] mb-1">↔️ Dominio</h4>
+                        <p class="text-3xl font-bold text-[--color-acento-azul]">\( \mathbb{R} \)</p>
+                        <p class="text-sm text-[--color-texto-secundario]">(Todos los números reales)</p>
+                    </div>
+                    <div class="stat-card p-5 text-center transition-all duration-300">
+                        <h4 class="text-lg font-semibold text-[--color-principal] mb-1">⬆️ Recorrido</h4>
+                        <p class="text-3xl font-bold text-[--color-acento-azul]">\( \mathbb{R}^+ \)</p>
+                        <p class="text-sm text-[--color-texto-secundario]">(Solo reales positivos)</p>
+                    </div>
+                    <div class="stat-card p-5 text-center transition-all duration-300">
+                        <h4 class="text-lg font-semibold text-[--color-principal] mb-1">📍 Intersección eje Y</h4>
+                        <p class="text-3xl font-bold text-[--color-acento-azul]">(0, 1)</p>
+                        <p class="text-sm text-[--color-texto-secundario]">(Ya que \( a^0 = 1 \))</p>
+                    </div>
+                    <div class="stat-card p-5 text-center transition-all duration-300">
+                        <h4 class="text-lg font-semibold text-[--color-principal] mb-1">➖ Asíntota</h4>
+                        <p class="text-3xl font-bold text-[--color-acento-azul]">\( y = 0 \)</p>
+                        <p class="text-sm text-[--color-texto-secundario]">(El eje X)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 3: Función Logarítmica -->
+            <section class="panel-card p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Columna de Texto -->
+                <div>
+                    <h2 class="text-3xl font-bold text-[--color-principal] mb-4">📉 La función logarítmica</h2>
+                    <p class="text-lg font-normal text-[--color-texto-secundario] mb-6">
+                        El logaritmo es la <strong>función inversa</strong> de la exponencial. Deshace lo que hace la exponencial.
+                        Si \( f(x) = a^x \), entonces su inversa es \( f^{-1}(x) = \log_a x \).
+                    </p>
+                    <p class="text-base text-[--color-texto-secundario] mb-4">
+                        Gráficamente, esto significa que la función logarítmica es un reflejo de la exponencial a través de la línea \( y = x \).
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div class="stat-card p-4">
+                            <h4 class="font-semibold text-[--color-principal]">Dominio de \( \log_a x \)</h4>
+                            <p class="text-xl font-bold text-[--color-acento-azul]">\( x > 0 \)</p>
+                        </div>
+                        <div class="stat-card p-4">
+                            <h4 class="font-semibold text-[--color-principal]">Asíntota de \( \log_a x \)</h4>
+                            <p class="text-xl font-bold text-[--color-acento-azul]">\( x = 0 \) (Vertical)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Columna de Gráfico -->
+                <div>
+                    <div class="relative w-full h-80 md:h-96">
+                        <canvas id="logarithmicChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 4: Aplicaciones en el Mundo Real -->
+            <section>
+                <h2 class="text-3xl font-bold text-[--color-principal] mb-8 text-center">🌎 Aplicaciones en el mundo real</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    
+                    <!-- Aplicación 1: Decrecimiento Exponencial -->
+                    <div class="panel-card p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-[--color-principal] mb-4">💊 Decrecimiento (fármaco)</h3>
+                        <p class="mb-6 text-[--color-texto-secundario]">
+                            La cantidad de un fármaco en el cuerpo (en mg) \( t \) horas después de administrarlo sigue un modelo de decrecimiento: \( D(t) = D_0 e^{-kt} \).
+                        </p>
+                        <div class="relative w-full h-64 md:h-72 mb-4">
+                            <canvas id="decayChart"></canvas>
+                        </div>
+                        <p class="text-sm text-center text-gray-500">Modelo: \( D(t) = 400 e^{-0.14t} \)</p>
+                    </div>
+
+                    <!-- Aplicación 2: Escala Logarítmica -->
+                    <div class="panel-card p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-[--color-principal] mb-4">🔊 Crecimiento (sonido)</h3>
+                        <p class="mb-6 text-[--color-texto-secundario]">
+                            La escala de decibelios (dB) es logarítmica. Esto significa que un pequeño aumento en dB representa un gran aumento en la intensidad del sonido.
+                        </p>
+                        <div class="stat-card p-6 flex flex-col items-center justify-center h-64 md:h-72 text-center">
+                             <p class="text-lg font-medium text-[--color-principal]">Duplicar la intensidad del sonido (de \( I \) a \( 2I \)) no duplica los decibelios. Solo añade...</p>
+                             <p class="text-6xl font-extrabold text-[--color-acento-amarillo] my-4">≈ +3.01 dB</p>
+                             <p class="text-sm text-gray-500">Basado en \( 10 \log_{10}(2) \approx 3.01 \)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- Sección 5: Laboratorio de Transformaciones Interactivo -->
+            <section class="panel-card p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[--color-principal] mb-2 text-center">🔬 Laboratorio de transformaciones</h2>
+                <p class="text-lg text-center text-[--color-texto-secundario] mb-6">
+                    Observa cómo la gráfica \( g(x) = c \cdot 2^{x-h} + v \) cambia al ajustar los parámetros.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <!-- Columna de Gráfico -->
+                    <div class="relative w-full h-96">
+                        <canvas id="transformationChart"></canvas>
+                    </div>
+                    
+                    <!-- Columna de Controles -->
+                    <div class="space-y-6">
+                        <p class="text-center text-2xl font-bold text-[--color-principal] p-4 bg-[--color-fondo-claro] rounded-lg break-words" id="transformFormulaContainer">
+                            \( g(x) = 1.0 \cdot 2^{x - 0.0} + 0.0 \)
+                        </p>
+                        
+                        <!-- Slider c: Estiramiento Vertical -->
+                        <div>
+                            <label for="sliderC" class="block text-sm font-medium text-[--color-principal] mb-2">Estiramiento vertical (\( c \)): <span id="valueC" class="font-bold">1.0</span></label>
+                            <input type="range" id="sliderC" min="-3" max="5" value="1" step="0.1">
+                        </div>
+
+                        <!-- Slider h: Traslación Horizontal -->
+                        <div>
+                            <label for="sliderH" class="block text-sm font-medium text-[--color-principal] mb-2">Traslación horizontal (\( h \)): <span id="valueH" class="font-bold">0.0</span></label>
+                            <input type="range" id="sliderH" min="-5" max="5" value="0" step="0.5">
+                        </div>
+
+                        <!-- Slider v: Traslación Vertical -->
+                        <div>
+                            <label for="sliderV" class="block text-sm font-medium text-[--color-principal] mb-2">Traslación vertical (\( v \)): <span id="valueV" class="font-bold">0.0</span></label>
+                            <input type="range" id="sliderV" min="-5" max="5" value="0" step="0.5">
+                        </div>
+                        
+                        <button id="resetButton" class="w-full py-3 px-4 bg-[--color-acento-azul] text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300">
+                            Reiniciar transformación
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Sección 6: Visualizador de Dominio (NUEVA SECCIÓN) -->
+            <section class="panel-card p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[--color-principal] mb-2 text-center">👓 Visualizador de dominio logarítmico</h2>
+                <p class="text-lg text-center text-[--color-texto-secundario] mb-6">
+                    Para que \( f(x) = \log_a(g(x)) \) exista, el argumento \( g(x) \) debe ser estrictamente positivo.
+                </p>
+                <p class="text-2xl text-center font-bold text-[--color-principal] mb-6">Dominio = { \( x \) | \( g(x) > 0 \) }</p>
+
+                <div class="mb-6 text-center">
+                    <label for="gFunctionSelect" class="block text-sm font-medium text-[--color-principal] mb-2">Selecciona la función interna \( g(x) \):</label>
+                    <select id="gFunctionSelect" class="mt-1 p-2 rounded-lg border border-gray-300 bg-white shadow-sm text-lg text-[--color-principal]">
+                        <option value="parabola">g(x) = 5 - 4x - x²</option>
+                        <option value="linea">g(x) = x - 2</option>
+                    </select>
+                </div>
+
+                <div class="relative w-full h-96">
+                    <canvas id="domainChart"></canvas>
+                </div>
+                
+                <div id="domainResult" class="text-center text-xl font-bold text-[--color-texto-secundario] p-4 mt-6 bg-[--color-fondo-claro] rounded-lg">
+                    El dominio (donde \( g(x) > 0 \)) es la región verde: \( x \in (-5, 1) \)
+                </div>
+                
+                <!-- NUEVO: Análisis de g(x) -->
+                <div id="domainAnalysis" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-center">
+                    <div class="stat-card p-4">
+                        <h4 class="font-semibold text-[--color-principal]">📍 Raíces de \(g(x)\) (Cortes Eje X)</h4>
+                        <p class="text-xl font-bold text-[--color-acento-rojo]" id="domainRoots">\( x = -5, x = 1 \)</p>
+                    </div>
+                    <div class="stat-card p-4" id="domainExtremumContainer">
+                        <h4 class="font-semibold text-[--color-principal]" id="domainExtremumLabel">✨ Punto Máximo (Vértice)</h4>
+                        <p class="text-xl font-bold text-[--color-acento-verde]" id="domainExtremum">\( (-2, 9) \)</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="text-center py-10 mt-16 border-t border-[#EEEEEE] text-sm text-[--color-texto-secundario] opacity-90">
+        2025 - Desarrollado por <a href="#" class="font-semibold underline hover:text-[--color-principal]">Javier Trigoso</a>
+        <a href="https://www.linkedin.com/in/javiertrigosojrtt/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="inline-block bg-[--color-principal] text-white font-bold px-1.5 py-0.5 text-xs rounded-sm mx-1 align-middle hover:bg-[--color-acento-azul]">in</a>
+        - SPVC. © ℗ ® (CC BY-NC-SA)
+    </footer>
+
+    <script>
+        function wrapLabels(labels, maxLen = 16) {
+            return labels.map(label => {
+                if (typeof label !== 'string' || label.length <= maxLen) {
+                    return label;
+                }
+                
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+
+                words.forEach(word => {
+                    if ((currentLine + ' ' + word).trim().length > maxLen && currentLine.length > 0) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                });
+                if (currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                }
+                return lines;
+            });
+        }
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+        
+        const M3_COLORS = {
+            azul: '#2196F3',
+            verde: '#4CAF60',
+            rojo: '#FF4436',
+            amarillo: '#FFC107',
+            principal: '#35465C',
+            gris: '#BDBDBD'
+        };
+
+        window.addEventListener('load', () => {
+
+            // ===========================================
+            // Gráfico 1: Explorador Exponencial Interactivo
+            // ===========================================
+            
+            const ctxExp = document.getElementById('exponentialChart').getContext('2d');
+            const baseSlider = document.getElementById('baseSlider');
+            const baseFormulaContainer = document.getElementById('baseFormulaContainer');
+            const chartDescription = document.getElementById('chartDescription');
+
+            const expChartConfig = {
+                type: 'line',
+                data: {
+                    labels: [-3, -2, -1, 0, 1, 2, 3, 4],
+                    datasets: [{
+                        label: 'f(x) = a^x',
+                        data: [],
+                        borderColor: M3_COLORS.verde,
+                        borderWidth: 4,
+                        tension: 0.1,
+                        fill: false,
+                        pointBackgroundColor: M3_COLORS.verde,
+                        pointRadius: 4,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' },
+                            ticks: { font: { weight: '600' } }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' },
+                            ticks: { font: { weight: '600' } },
+                            min: 0,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: M3_COLORS.principal,
+                            titleFont: { size: 16, weight: 'bold' },
+                            bodyFont: { size: 14 },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            };
+            
+            const exponentialChart = new Chart(ctxExp, expChartConfig);
+            
+            function updateExponentialChart(base) {
+                base = parseFloat(base);
+                const data = expChartConfig.data.labels.map(x => Math.pow(base, x));
+                exponentialChart.data.datasets[0].data = data;
+                
+                let yMax = Math.max(...data.filter(y => isFinite(y)));
+                yMax = Math.ceil(yMax / 5) * 5 || 10;
+                exponentialChart.options.scales.y.max = Math.min(Math.max(yMax, 10), 100);
+                
+                exponentialChart.update();
+                
+                const formula = `\\( f(x) = ${base.toFixed(1)}^x \\)`;
+                baseFormulaContainer.textContent = formula;
+
+                let description = '';
+                if (base > 1) {
+                    description = `Con \\( a = ${base.toFixed(1)} \\), la función es <span class="font-bold">creciente</span> (crecimiento exponencial).`;
+                    exponentialChart.data.datasets[0].borderColor = M3_COLORS.verde;
+                    exponentialChart.data.datasets[0].pointBackgroundColor = M3_COLORS.verde;
+                } else if (base === 1) {
+                    description = `Con \\( a = 1 \\), la función es una <span class="font-bold">constante</span> \\( y = 1 \\).`;
+                    exponentialChart.data.datasets[0].borderColor = M3_COLORS.amarillo;
+                    exponentialChart.data.datasets[0].pointBackgroundColor = M3_COLORS.amarillo;
+                } else {
+                    description = `Con \\( a = ${base.toFixed(1)} \\), la función es <span class="font-bold">decreciente</span> (decrecimiento exponencial).`;
+                    exponentialChart.data.datasets[0].borderColor = M3_COLORS.rojo;
+                    exponentialChart.data.datasets[0].pointBackgroundColor = M3_COLORS.rojo;
+                }
+                chartDescription.innerHTML = description;
+                
+                if (window.MathJax) {
+                    MathJax.typesetPromise([chartDescription, baseFormulaContainer]);
+                }
+            }
+
+            baseSlider.addEventListener('input', (e) => updateExponentialChart(e.target.value));
+            updateExponentialChart(baseSlider.value);
+
+
+            // ===========================================
+            // Gráfico 2: Inversa Logarítmica
+            // ===========================================
+            const ctxLog = document.getElementById('logarithmicChart').getContext('2d');
+            new Chart(ctxLog, {
+                type: 'line',
+                data: {
+                    labels: [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8],
+                    datasets: [{
+                        label: 'f(x) = 2^x',
+                        data: [-2, -1, 0, 1, 2, 3, 4].map(x => ({ x: x, y: Math.pow(2, x) })),
+                        borderColor: 'rgba(76, 175, 96, 0.4)',
+                        borderWidth: 3,
+                        tension: 0.1,
+                        fill: false,
+                        pointRadius: 0,
+                        borderDash: [5, 5]
+                    }, {
+                        label: 'f⁻¹(x) = log₂(x)',
+                        data: [0.125, 0.25, 0.5, 1, 2, 4, 8].map(x => ({ x: x, y: Math.log2(x) })),
+                        borderColor: M3_COLORS.azul,
+                        borderWidth: 4,
+                        tension: 0.1,
+                        fill: false,
+                        pointBackgroundColor: M3_COLORS.azul,
+                        pointRadius: 4,
+                        pointHoverRadius: 7
+                    }, {
+                        label: 'y = x',
+                        data: [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8].map(x => ({ x: x, y: x })),
+                        borderColor: M3_COLORS.gris,
+                        borderWidth: 2,
+                        tension: 0,
+                        fill: false,
+                        pointRadius: 0,
+                        borderDash: [10, 10]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            min: -2,
+                            max: 8,
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' }
+                        },
+                        y: {
+                            min: -2,
+                            max: 8,
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true } },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: M3_COLORS.principal,
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+
+            // ===========================================
+            // Gráfico 3: Decrecimiento Fármaco
+            // ===========================================
+            const ctxDecay = document.getElementById('decayChart').getContext('2d');
+            const decayLabels = Array.from({ length: 11 }, (_, i) => i * 2); // 0 a 20 horas
+            const decayData = decayLabels.map(t => 400 * Math.exp(-0.14 * t));
+            
+            new Chart(ctxDecay, {
+                type: 'line',
+                data: {
+                    labels: decayLabels,
+                    datasets: [{
+                        label: 'Fármaco en mg',
+                        data: decayData,
+                        borderColor: M3_COLORS.rojo,
+                        backgroundColor: 'rgba(255, 68, 54, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.1,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHitRadius: 10,
+                        pointHoverBackgroundColor: M3_COLORS.rojo
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Horas (t)', color: '#555555' },
+                            grid: { display: false }
+                        },
+                        y: {
+                            title: { display: true, text: 'mg', color: '#555555' },
+                            min: 0,
+                            max: 400,
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: M3_COLORS.principal,
+                            padding: 10,
+                            cornerRadius: 6,
+                            callbacks: {
+                                title: (tooltipItems) => `Hora ${tooltipItems[0].label}`,
+                                label: (tooltipItem) => ` ${parseFloat(tooltipItem.raw).toFixed(1)} mg`
+                            }
+                        }
+                    }
+                }
+            });
+            
+            
+            // ===========================================
+            // Gráfico 4: Laboratorio de Transformaciones
+            // ===========================================
+            
+            const ctxTransform = document.getElementById('transformationChart').getContext('2d');
+            const sliderC = document.getElementById('sliderC');
+            const sliderH = document.getElementById('sliderH');
+            const sliderV = document.getElementById('sliderV');
+            const valueC = document.getElementById('valueC');
+            const valueH = document.getElementById('valueH');
+            const valueV = document.getElementById('valueV');
+            const transformFormulaContainer = document.getElementById('transformFormulaContainer');
+            const resetButton = document.getElementById('resetButton');
+
+            const transformLabels = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+            const baseData = transformLabels.map(x => Math.pow(2, x));
+            
+            const transformChartConfig = {
+                type: 'line',
+                data: {
+                    labels: transformLabels,
+                    datasets: [
+                        {
+                            label: 'f(x) = 2^x (Base)',
+                            data: baseData,
+                            borderColor: M3_COLORS.gris,
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            tension: 0.1,
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            label: 'g(x) (Transformada)',
+                            data: [],
+                            borderColor: M3_COLORS.amarillo,
+                            borderWidth: 4,
+                            tension: 0.1,
+                            fill: false,
+                            pointBackgroundColor: M3_COLORS.amarillo,
+                            pointRadius: 0,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' },
+                            min: -5,
+                            max: 5
+                        },
+                        y: {
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' },
+                            min: -10,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: M3_COLORS.principal,
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
+                }
+            };
+
+            const transformationChart = new Chart(ctxTransform, transformChartConfig);
+            
+            function updateTransformationChart() {
+                const c = parseFloat(sliderC.value);
+                const h = parseFloat(sliderH.value);
+                const v = parseFloat(sliderV.value);
+
+                valueC.textContent = c.toFixed(1);
+                valueH.textContent = h.toFixed(1);
+                valueV.textContent = v.toFixed(1);
+
+                const transformedData = transformLabels.map(x => c * Math.pow(2, x - h) + v);
+                transformationChart.data.datasets[1].data = transformedData;
+                
+                let yMin = Math.min(...transformedData.filter(y => isFinite(y)));
+                let yMax = Math.max(...transformedData.filter(y => isFinite(y)));
+                yMin = Math.floor(Math.min(yMin, -5, v) / 5) * 5;
+                yMax = Math.ceil(Math.max(yMax, 5, v) / 5) * 5;
+                transformationChart.options.scales.y.min = Math.max(yMin, -50);
+                transformationChart.options.scales.y.max = Math.min(yMax, 50);
+
+                transformationChart.update();
+                
+                const formula = `\\( g(x) = ${c.toFixed(1)} \\cdot 2^{x - ${h.toFixed(1)}} + ${v.toFixed(1)} \\)`;
+                transformFormulaContainer.textContent = formula;
+                
+                if (window.MathJax) {
+                    MathJax.typesetPromise([transformFormulaContainer]);
+                }
+            }
+            
+            function resetTransformations() {
+                sliderC.value = 1;
+                sliderH.value = 0;
+                sliderV.value = 0;
+                updateTransformationChart();
+            }
+
+            sliderC.addEventListener('input', updateTransformationChart);
+            sliderH.addEventListener('input', updateTransformationChart);
+            sliderV.addEventListener('input', updateTransformationChart);
+            resetButton.addEventListener('click', resetTransformations);
+
+            resetTransformations();
+
+            
+            // ===========================================
+            // Gráfico 5: Visualizador de Dominio (NUEVO SCRIPT)
+            // ===========================================
+            
+            const ctxDomain = document.getElementById('domainChart').getContext('2d');
+            const gFunctionSelect = document.getElementById('gFunctionSelect');
+            const domainResult = document.getElementById('domainResult');
+            // Nuevos elementos
+            const domainRoots = document.getElementById('domainRoots');
+            const domainExtremumContainer = document.getElementById('domainExtremumContainer');
+            const domainExtremumLabel = document.getElementById('domainExtremumLabel');
+            const domainExtremum = document.getElementById('domainExtremum');
+
+            const domainChartConfig = {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'g(x)',
+                        data: [],
+                        borderColor: M3_COLORS.azul,
+                        borderWidth: 4,
+                        tension: 0.1,
+                        pointRadius: 0,
+                        fill: {
+                            target: 'origin',
+                            above: 'rgba(76, 175, 96, 0.3)', // Verde
+                            below: 'rgba(255, 68, 54, 0.3)'  // Rojo
+                        }
+                    }, {
+                        label: 'Puntos Clave',
+                        type: 'scatter', // Dataset para mostrar puntos clave
+                        data: [],
+                        backgroundColor: M3_COLORS.principal,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(200, 200, 200, 0.2)' },
+                            ticks: { font: { weight: '600' } }
+                        },
+                        y: {
+                            grid: { 
+                                color: (context) => (context.tick.value === 0 ? M3_COLORS.principal : 'rgba(200, 200, 200, 0.2)'),
+                                lineWidth: (context) => (context.tick.value === 0 ? 2 : 1)
+                            },
+                            ticks: { font: { weight: '600' } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: M3_COLORS.principal,
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
+                }
+            };
+            
+            const domainChart = new Chart(ctxDomain, domainChartConfig);
+
+            function updateDomainChart(functionName) {
+                let labels, data, domainText, rootsText, extremumText, extremumLabel, keyPoints;
+                
+                if (functionName === 'parabola') {
+                    // g(x) = 5 - 4x - x^2. Raíces en x = -5 y x = 1. Vértice en x = -2.
+                    labels = Array.from({length: 13}, (_, i) => i - 8); // -8 a 4
+                    data = labels.map(x => 5 - 4*x - x*x);
+                    
+                    const root1 = { x: -5, y: 0 };
+                    const root2 = { x: 1, y: 0 };
+                    const vertex = { x: -2, y: 5 - 4*(-2) - (-2)*(-2) }; // 5 + 8 - 4 = 9
+                    keyPoints = [root1, root2, vertex];
+
+                    domainText = 'El dominio (donde \\( g(x) > 0 \\)) es la región verde: \\( x \\in (-5, 1) \\)';
+                    rootsText = '\\( x = -5, x = 1 \\)';
+                    extremumLabel = 'Punto Máximo (Vértice)';
+                    extremumText = `\\( (${vertex.x}, ${vertex.y}) \\)`;
+                    domainExtremumContainer.style.display = 'block';
+
+                } else { // 'linea'
+                    // g(x) = x - 2. Raíz en x = 2.
+                    labels = Array.from({length: 11}, (_, i) => i - 2); // -2 a 8
+                    data = labels.map(x => x - 2);
+                    
+                    const root = { x: 2, y: 0 };
+                    keyPoints = [root];
+
+                    domainText = 'El dominio (donde \\( g(x) > 0 \\)) es la región verde: \\( x > 2 \\)';
+                    rootsText = '\\( x = 2 \\)';
+                    domainExtremumContainer.style.display = 'none'; // Ocultar para la línea
+                }
+
+                domainChart.data.labels = labels;
+                domainChart.data.datasets[0].data = data;
+                domainChart.data.datasets[1].data = keyPoints; // Actualizar puntos clave
+                
+                let yMin = Math.min(...data, ...keyPoints.map(p => p.y));
+                let yMax = Math.max(...data, ...keyPoints.map(p => p.y));
+                yMin = Math.floor(Math.min(yMin, -5) / 5) * 5;
+                yMax = Math.ceil(Math.max(yMax, 5) / 5) * 5;
+                
+                domainChart.options.scales.y.min = yMin;
+                domainChart.options.scales.y.max = yMax;
+
+                domainChart.update();
+
+                domainResult.textContent = domainText;
+                domainRoots.textContent = rootsText;
+                if (functionName === 'parabola') {
+                    domainExtremumLabel.textContent = extremumLabel;
+                    domainExtremum.textContent = extremumText;
+                }
+
+                if (window.MathJax) {
+                    MathJax.typesetPromise([domainResult, domainRoots, domainExtremum]);
+                }
+            }
+
+            gFunctionSelect.addEventListener('change', (e) => updateDomainChart(e.target.value));
+            updateDomainChart(gFunctionSelect.value);
+
+        });
+    </script>
+
+</body>
+</html>
+
+
+

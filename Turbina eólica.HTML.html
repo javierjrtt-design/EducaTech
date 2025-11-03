@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Turbina Eólica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --tec-blue: #002D72;
+            --tec-blue-medium: #004B9A;
+            --tec-green: #00B388;
+            --tec-orange: #F06C22;
+            --bg-light: #F5F6FA;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--tec-blue) 0%, var(--tec-blue-medium) 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--tec-blue);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .formula-section {
+            background: linear-gradient(135deg, var(--tec-blue) 0%, var(--tec-blue-medium) 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 45, 114, 0.3);
+        }
+
+        .formula-section h2 {
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .formula-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 2.2rem;
+            font-family: 'Courier New', monospace;
+            color: var(--tec-blue);
+            font-weight: bold;
+        }
+
+        .controls-section {
+            background: linear-gradient(135deg, var(--tec-orange) 0%, #e85d12 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(240, 108, 34, 0.3);
+        }
+
+        .time-display {
+            text-align: center;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .time-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .time-value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: block;
+            line-height: 1;
+        }
+
+        .time-unit {
+            font-size: 1rem;
+            margin-top: 0.3rem;
+            opacity: 0.9;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            outline: none;
+            margin: 1.5rem 0;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        input[type=range]::-moz-range-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .control-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: white;
+            color: var(--tec-orange);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .control-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-button:active {
+            transform: translateY(-1px);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: var(--tec-green);
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--tec-green);
+        }
+
+        .visualization-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .viz-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--bg-light);
+        }
+
+        .viz-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--tec-blue);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+        }
+
+        #turbineCanvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        .params-section {
+            margin-top: 3rem;
+        }
+
+        .params-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--tec-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--tec-green);
+        }
+
+        .params-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .param-card {
+            background: linear-gradient(135deg, var(--tec-green) 0%, #008c6d 100%);
+            padding: 1.8rem;
+            border-radius: 14px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 179, 136, 0.3);
+            transition: all 0.3s;
+        }
+
+        .param-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 179, 136, 0.4);
+        }
+
+        .param-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .param-value {
+            font-size: 1rem;
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 968px) {
+            .visualization-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .time-value {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🌬️ Simulador de Turbina Eólica</h1>
+            <p class="subtitle">Visualización interactiva del modelo trigonométrico a(t)</p>
+
+            <div class="formula-section">
+                <h2>📐 Modelo Matemático</h2>
+                <div class="formula-box">
+                    a(t) = 90 sin(πt/2) + 90
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="time-display">
+                    <div class="time-label">Tiempo de simulación (t)</div>
+                    <span class="time-value" id="timeValue">0.00</span>
+                    <div class="time-unit">segundos</div>
+                </div>
+                
+                <input type="range" id="timeInput" min="0" max="8" value="0" step="0.01">
+                
+                <button class="control-button" id="animateButton">
+                    <span class="icon" id="playIcon">▶</span>
+                    <span class="icon hidden" id="stopIcon">⏸</span>
+                    <span id="buttonText">Iniciar Simulación</span>
+                </button>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">📏 Altura a(t)</div>
+                        <div class="metric-value" id="heightValue">90.00 m</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">🔄 Ángulo θ</div>
+                        <div class="metric-value" id="angleValue">0.0°</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="visualization-grid">
+                <div class="viz-card">
+                    <h3 class="viz-title">📊 Altura vs Tiempo</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="heightChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="viz-card">
+                    <h3 class="viz-title">🌀 Rotación del Aspa</h3>
+                    <canvas id="turbineCanvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+            <div class="params-section">
+                <h2 class="params-title">⚙️ Parámetros Clave del Modelo</h2>
+                <div class="params-grid">
+                    <div class="param-card">
+                        <div class="param-title">📏 Amplitud (A)</div>
+                        <div class="param-value">Radio de la pala: A = 90 m</div>
+                    </div>
+                    <div class="param-card">
+                        <div class="param-title">⬆️ Desplazamiento Vertical (D)</div>
+                        <div class="param-value">Altura del centro: D = 90 m</div>
+                    </div>
+                    <div class="param-card">
+                        <div class="param-title">🔄 Período (P)</div>
+                        <div class="param-value">Tiempo de una vuelta: P = 4 s</div>
+                    </div>
+                    <div class="param-card">
+                        <div class="param-title">📐 Rango de Alturas</div>
+                        <div class="param-value">De 0 m (mín) a 180 m (máx)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONSTANTES
+        const R = 90;
+        const D = 90;
+        const B = Math.PI / 2;
+        const totalDuration = 8;
+        const stepSize = 0.01;
+
+        // ELEMENTOS DOM
+        const timeInput = document.getElementById('timeInput');
+        const timeValueSpan = document.getElementById('timeValue');
+        const heightValueSpan = document.getElementById('heightValue');
+        const angleValueSpan = document.getElementById('angleValue');
+        const turbineCanvas = document.getElementById('turbineCanvas');
+        const ctx = turbineCanvas.getContext('2d');
+        const animateButton = document.getElementById('animateButton');
+        const buttonText = document.getElementById('buttonText');
+        const playIcon = document.getElementById('playIcon');
+        const stopIcon = document.getElementById('stopIcon');
+        const chartCanvas = document.getElementById('heightChart');
+        const chartCtx = chartCanvas.getContext('2d');
+
+        // ESTADO
+        let chart = null;
+        let animationFrameId = null;
+        let isAnimating = false;
+        let animationStartTime = null;
+
+        // FUNCIONES MATEMÁTICAS
+        function calculateHeight(t) {
+            return R * Math.sin(B * t) + D;
+        }
+
+        function calculateAngle(t) {
+            let angleRad = (B * t) % (2 * Math.PI);
+            if (angleRad < 0) angleRad += 2 * Math.PI;
+            return angleRad * (180 / Math.PI);
+        }
+
+        // INICIALIZAR GRÁFICO
+        function initChart() {
+            const numPoints = Math.floor(totalDuration / stepSize) + 1;
+            const dataPoints = [];
+            
+            for (let i = 0; i < numPoints; i++) {
+                const t = i * stepSize;
+                dataPoints.push({ x: t, y: calculateHeight(t) });
+            }
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(chartCtx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Altura a(t)',
+                            data: dataPoints,
+                            borderColor: '#004B9A',
+                            backgroundColor: 'rgba(0, 75, 154, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Posición Actual',
+                            data: [{ x: 0, y: calculateHeight(0) }],
+                            backgroundColor: '#F06C22',
+                            borderColor: '#fff',
+                            borderWidth: 3,
+                            pointRadius: 12,
+                            pointHoverRadius: 14,
+                            showLine: false
+                        },
+                        {
+                            label: 'Centro (90m)',
+                            data: [{ x: 0, y: 90 }, { x: totalDuration, y: 90 }],
+                            borderColor: '#00B388',
+                            borderWidth: 2,
+                            borderDash: [8, 4],
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 45, 114, 0.9)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: {
+                                display: true,
+                                text: 'Tiempo (t) en segundos',
+                                font: {
+                                    size: 13,
+                                    weight: '600',
+                                    family: 'Montserrat'
+                                },
+                                color: '#002D72'
+                            },
+                            min: 0,
+                            max: totalDuration,
+                            ticks: {
+                                stepSize: 1,
+                                font: { size: 11 },
+                                color: '#666'
+                            },
+                            grid: {
+                                color: 'rgba(0, 45, 114, 0.1)'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            title: {
+                                display: true,
+                                text: 'Altura (a(t)) en metros',
+                                font: {
+                                    size: 13,
+                                    weight: '600',
+                                    family: 'Montserrat'
+                                },
+                                color: '#002D72'
+                            },
+                            min: 0,
+                            max: 180,
+                            ticks: {
+                                stepSize: 30,
+                                font: { size: 11 },
+                                color: '#666'
+                            },
+                            grid: {
+                                color: 'rgba(0, 45, 114, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // DIBUJAR TURBINA
+        function drawTurbine(angleDeg) {
+            const width = turbineCanvas.width;
+            const height = turbineCanvas.height;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(width, height) * 0.35;
+
+            // Círculo guía
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'rgba(0, 75, 154, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Torre
+            ctx.fillStyle = '#9CA3AF';
+            ctx.fillRect(centerX - 12, centerY, 24, height - centerY);
+            
+            // Sombra torre
+            ctx.fillStyle = '#6B7280';
+            ctx.fillRect(centerX + 6, centerY, 6, height - centerY);
+
+            // Buje (centro)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+            ctx.fillStyle = '#002D72';
+            ctx.fill();
+            ctx.strokeStyle = '#004B9A';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Aspa
+            const angleRad = (angleDeg * Math.PI) / 180;
+            const endX = centerX + radius * Math.cos(angleRad);
+            const endY = centerY - radius * Math.sin(angleRad);
+
+            // Sombra del aspa
+            ctx.shadowColor = 'rgba(240, 108, 34, 0.4)';
+            ctx.shadowBlur = 15;
+            ctx.shadowOffsetX = 3;
+            ctx.shadowOffsetY = 3;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(endX, endY);
+            ctx.strokeStyle = '#F06C22';
+            ctx.lineWidth = 14;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            ctx.shadowColor = 'transparent';
+
+            // Punta del aspa
+            ctx.beginPath();
+            ctx.arc(endX, endY, 12, 0, 2 * Math.PI);
+            ctx.fillStyle = '#00B388';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Centro blanco del buje
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+        }
+
+        // ACTUALIZAR UI
+        function updateUI(t) {
+            const height = calculateHeight(t);
+            const angle = calculateAngle(t);
+
+            timeValueSpan.textContent = t.toFixed(2);
+            heightValueSpan.textContent = height.toFixed(2) + ' m';
+            angleValueSpan.textContent = angle.toFixed(1) + '°';
+
+            drawTurbine(angle);
+
+            if (chart) {
+                chart.data.datasets[1].data = [{ x: t, y: height }];
+                chart.update('none');
+            }
+        }
+
+        // EVENTO: Cambio manual del slider
+        function handleTimeChange() {
+            if (isAnimating) return;
+            updateUI(parseFloat(timeInput.value));
+        }
+
+        // LOOP DE ANIMACIÓN
+        function animateLoop(timestamp) {
+            if (!isAnimating) return;
+
+            if (animationStartTime === null) {
+                animationStartTime = timestamp - (parseFloat(timeInput.value) * 1000);
+            }
+
+            const elapsed = (timestamp - animationStartTime) / 1000;
+            const t = elapsed % totalDuration;
+
+            timeInput.value = t.toFixed(2);
+            updateUI(t);
+
+            animationFrameId = requestAnimationFrame(animateLoop);
+        }
+
+        // TOGGLE ANIMACIÓN
+        function toggleAnimation() {
+            if (isAnimating) {
+                isAnimating = false;
+                cancelAnimationFrame(animationFrameId);
+                buttonText.textContent = 'Reanudar Simulación';
+                playIcon.classList.remove('hidden');
+                stopIcon.classList.add('hidden');
+                timeInput.disabled = false;
+            } else {
+                isAnimating = true;
+                
+                if (parseFloat(timeInput.value) >= totalDuration - stepSize) {
+                    timeInput.value = '0';
+                }
+                
+                animationStartTime = performance.now() - (parseFloat(timeInput.value) * 1000);
+                buttonText.textContent = 'Detener Simulación';
+                playIcon.classList.add('hidden');
+                stopIcon.classList.remove('hidden');
+                timeInput.disabled = true;
+                
+                animationFrameId = requestAnimationFrame(animateLoop);
+            }
+        }
+
+        // INICIALIZACIÓN
+        function init() {
+            initChart();
+            drawTurbine(0);
+            updateUI(0);
+            
+            timeInput.addEventListener('input', handleTimeChange);
+            animateButton.addEventListener('click', toggleAnimation);
+        }
+
+        // Esperar a que Chart.js se cargue completamente
+        if (typeof Chart !== 'undefined') {
+            init();
+        } else {
+            window.addEventListener('load', init);
+        }
+    </script>
+</body>
+</html>

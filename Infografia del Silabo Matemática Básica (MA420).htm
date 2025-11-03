@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Matemática Básica MA420</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración para usar la fuente Inter y los colores corporativos de la UPC -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            /* Paleta de Colores de la UPC (según la solicitud del usuario) */
+            --color-principal-rojo: #E30613; /* Acento Principal */
+            --color-texto-oscuro: #222222; /* Títulos */
+            --color-texto-medio: #6E6E6E; /* Contenido */
+            --color-fondo-claro: #F5F5F5; /* Fondo de secciones */
+            --color-blanco: #FFFFFF;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-fondo-claro);
+        }
+        .text-rojo-principal { color: var(--color-principal-rojo); }
+        .bg-rojo-principal { background-color: var(--color-principal-rojo); }
+        .text-gris-oscuro { color: var(--color-texto-oscuro); }
+        .text-gris-medio { color: var(--color-texto-medio); }
+        .bg-fondo-claro { background-color: var(--color-fondo-claro); }
+
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-6xl mx-auto bg-white rounded-xl overflow-hidden card-shadow">
+        <!-- HEADER / TÍTULO PRINCIPAL -->
+        <header class="bg-rojo-principal text-white p-6 sm:p-8 text-center">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Infografía del Sílabo: Matemática Básica (MA420)
+            </h1>
+            <p class="mt-1 text-lg font-light">
+                Curso | Ciclo 202102 | 6 Créditos | Ingeniería
+            </p>
+        </header>
+
+        <main class="p-4 sm:p-10 space-y-12">
+
+            <!-- SECCIÓN 1: INTRODUCCIÓN Y MARCO INSTITUCIONAL -->
+            <section class="space-y-6">
+                <h2 class="text-2xl font-bold text-gris-oscuro border-b-2 border-rojo-principal pb-2">
+                    Introducción y objetivo principal
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-fondo-claro p-5 rounded-lg border-l-4 border-rojo-principal md:col-span-2">
+                        <p class="font-bold text-lg text-gris-oscuro mb-2">Introducción</p>
+                        <p class="text-gris-medio text-sm">
+                            Este es un curso general, de carácter <strong>teórico-práctico</strong>, dirigido a los estudiantes de primer ciclo de ingeniería. Proporciona el soporte matemático fundamental para las asignaturas siguientes propias de cada especialidad. Por ello, los conceptos se definen de forma sencilla, relacionándose con problemas afines a la ingeniería.
+                        </p>
+                    </div>
+
+                    <div class="bg-fondo-claro p-5 rounded-lg border-l-4 border-rojo-principal">
+                        <p class="font-bold text-lg text-gris-oscuro mb-2">Logro del curso</p>
+                        <p class="text-gris-medio text-sm">
+                            El estudiante <strong>analiza</strong> conocimientos de <strong>precálculo</strong> para resolver ejercicios y problemas sencillos de ingeniería, empleando de forma adecuada el lenguaje matemático.
+                        </p>
+                        <p class="text-rojo-principal font-bold text-sm mt-2">Competencia: Razonamiento Cuantitativo (Nivel 1)</p>
+                    </div>
+                </div>
+
+                <!-- MISIÓN Y VISIÓN (Contexto superior) -->
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <p class="text-rojo-principal font-bold mb-1">Misión UPC</p>
+                        <p class="text-gris-oscuro text-sm">
+                            Formar líderes íntegros e innovadores con visión global para que transformen el Perú.
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <p class="text-rojo-principal font-bold mb-1">Visión UPC</p>
+                        <p class="text-gris-oscuro text-sm">
+                            Ser líder en la educación superior por su excelencia académica y su capacidad de innovación.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ESTRUCTURA DEL CONTENIDO Y TEMARIO DETALLADO -->
+            <section class="space-y-6">
+                <h2 class="text-2xl font-bold text-gris-oscuro border-b-2 border-rojo-principal pb-2">
+                    Estructura del contenido: 5 unidades clave y su relevancia
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Unidad 1 -->
+                    <div class="bg-fondo-claro p-4 rounded-lg card-shadow border-t-4 border-rojo-principal">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro">1. Cónicas</h3>
+                        <p class="text-sm font-semibold text-gris-medio mt-1 mb-2">Semanas 1 a 4</p>
+                        <ul class="text-gris-medio text-sm list-disc pl-4 space-y-0.5 mb-3">
+                            <li>Rectas.</li>
+                            <li>Circunferencia.</li>
+                            <li>La parábola: definición, foco, vértice, ecuación. Traslación.</li>
+                            <li>La elipse: definición, focos, vértices, excentricidad, ecuación. Traslación.</li>
+                        </ul>
+                        <p class="text-rojo-principal font-bold text-xs uppercase">Relevancia:</p>
+                        <p class="text-gris-oscuro text-sm">Base para el <strong>diseño geométrico</strong> de estructuras, trayectorias y sistemas ópticos.</p>
+                    </div>
+
+                    <!-- Unidad 2 -->
+                    <div class="bg-fondo-claro p-4 rounded-lg card-shadow border-t-4 border-rojo-principal">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro">2. Matrices y vectores</h3>
+                        <p class="text-sm font-semibold text-gris-medio mt-1 mb-2">Semanas 4 a 8</p>
+                         <ul class="text-gris-medio text-sm list-disc pl-4 space-y-0.5 mb-3">
+                            <li>Matrices (álgebra de matrices).</li>
+                            <li>Determinantes.</li>
+                            <li>Vectores en 2D y 3D.</li>
+                            <li>Sistemas de ecuaciones lineales (SEL) de varias variables.</li>
+                        </ul>
+                        <p class="text-rojo-principal font-bold text-xs uppercase">Relevancia:</p>
+                        <p class="text-gris-oscuro text-sm">Fundamental para el <strong>análisis estructural</strong>, el cálculo de fuerzas y la programación de gráficos 3D.</p>
+                    </div>
+
+                    <!-- Unidad 3 -->
+                    <div class="bg-fondo-claro p-4 rounded-lg card-shadow border-t-4 border-rojo-principal">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro">3. Funciones</h3>
+                        <p class="text-sm font-semibold text-gris-medio mt-1 mb-2">Semanas 6 a 11</p>
+                        <ul class="text-gris-medio text-sm list-disc pl-4 space-y-0.5 mb-3">
+                            <li>Definición de funciones, dominio y rango.</li>
+                            <li>Propiedades de las funciones (continuidad, monotonía, extremos, ceros, etc.).</li>
+                            <li>Funciones básicas y seccionadas.</li>
+                            <li>Operaciones con funciones, composición y función inversa.</li>
+                            <li>Técnicas de graficación. Función lineal y cuadrática.</li>
+                        </ul>
+                        <p class="text-rojo-principal font-bold text-xs uppercase">Relevancia:</p>
+                        <p class="text-gris-oscuro text-sm">La base para la <strong>modelación de sistemas</strong> dinámicos, el cálculo y la simulación.</p>
+                    </div>
+
+                    <!-- Unidad 4 -->
+                    <div class="bg-fondo-claro p-4 rounded-lg card-shadow border-t-4 border-rojo-principal">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro">4. Funciones exponenciales y logarítmicas</h3>
+                        <p class="text-sm font-semibold text-gris-medio mt-1 mb-2">Semanas 11 y 12</p>
+                        <ul class="text-gris-medio text-sm list-disc pl-4 space-y-0.5 mb-3">
+                            <li>Función exponencial.</li>
+                            <li>Función logarítmica.</li>
+                            <li>Ecuaciones exponenciales y logarítmicas.</li>
+                        </ul>
+                        <p class="text-rojo-principal font-bold text-xs uppercase">Relevancia:</p>
+                        <p class="text-gris-oscuro text-sm">Modelación de <strong>crecimiento/decaída</strong> (población, desintegración, tasas de interés).</p>
+                    </div>
+
+                    <!-- Unidad 5 -->
+                    <div class="bg-fondo-claro p-4 rounded-lg card-shadow border-t-4 border-rojo-principal">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro">5. Funciones trigonométricas</h3>
+                        <p class="text-sm font-semibold text-gris-medio mt-1 mb-2">Semanas 13 a 15</p>
+                        <ul class="text-gris-medio text-sm list-disc pl-4 space-y-0.5 mb-3">
+                            <li>Funciones trigonométricas de números reales (seno y coseno).</li>
+                            <li>Funciones sinusoidales y trigonométricas inversas.</li>
+                            <li>Ecuaciones trigonométricas.</li>
+                            <li>Resolución de triángulos rectángulos (ley de seno y coseno).</li>
+                        </ul>
+                        <p class="text-rojo-principal font-bold text-xs uppercase">Relevancia:</p>
+                        <p class="text-gris-oscuro text-sm">Esencial para el <strong>análisis de ondas</strong> (AC, sonido) y la solución de problemas de <strong>topografía</strong>.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: CRONOGRAMA, EVALUACIÓN Y METODOLOGÍA -->
+            <section class="space-y-6">
+                <h2 class="text-2xl font-bold text-gris-oscuro border-b-2 border-rojo-principal pb-2">
+                    Cronograma, metodología y evaluación
+                </h2>
+
+                <!-- CRONOGRAMA DE EVALUACIÓN -->
+                <div class="bg-fondo-claro p-6 rounded-lg card-shadow">
+                    <h3 class="text-xl font-extrabold text-gris-oscuro border-b border-rojo-principal pb-2 mb-4">
+                        Cronograma de evaluaciones clave
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead class="bg-white">
+                                <tr>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gris-oscuro">Prueba</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gris-oscuro">Peso</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gris-oscuro">Semana</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gris-oscuro">Recuperable</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white text-gris-medio text-sm">
+                                <tr>
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 font-medium text-gris-oscuro">PC1</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-rojo-principal font-bold">12%</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Semana 5</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Sí</td>
+                                </tr>
+                                <tr>
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 font-medium text-gris-oscuro">PC2</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-rojo-principal font-bold">16%</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Semana 10</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Sí</td>
+                                </tr>
+                                <tr>
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 font-medium text-gris-oscuro">PC3</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-rojo-principal font-bold">22%</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Semana 13</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Sí</td>
+                                </tr>
+                                <tr>
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 font-medium text-gris-oscuro">DD1 (Eval. Desempeño)</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-rojo-principal font-bold">20%</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Semana 15</td>
+                                    <td class="whitespace-nowrap px-3 py-4"><strong>No</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 font-medium text-gris-oscuro">EB1 (Examen Final)</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-rojo-principal font-bold">30%</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Semana 16</td>
+                                    <td class="whitespace-nowrap px-3 py-4">Sí</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- METODOLOGÍA -->
+                    <div class="space-y-4 bg-fondo-claro p-6 rounded-lg card-shadow">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro border-b border-rojo-principal pb-2">
+                            Metodología de enseñanza
+                        </h3>
+                        <p class="text-gris-medio text-sm">
+                            El proceso se centra en el <strong>aprendizaje activo</strong>, donde el estudiante tiene un rol protagónico. Las clases son <strong>presenciales (ahora virtuales)</strong> con el profesor como guía.
+                        </p>
+                        <ul class="text-sm text-gris-medio space-y-2 list-disc pl-5">
+                            <li><strong>Sesiones virtuales:</strong> Desarrollo de temas con material didáctico, estimulando la participación activa y el trabajo en equipos.</li>
+                            <li><strong>Trabajo autónomo:</strong> Sesiones diseñadas para el trabajo individual o colaborativo asincrónico (lecturas, videos).</li>
+                            <li><strong>Soporte:</strong> Se ofrecen <strong>tutorías virtuales</strong> y <strong>talleres virtuales</strong> para reforzar habilidades y preparar evaluaciones.</li>
+                        </ul>
+                    </div>
+
+                    <!-- ACTIVIDADES Y EVIDENCIAS -->
+                    <div class="space-y-4 bg-fondo-claro p-6 rounded-lg card-shadow">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro border-b border-rojo-principal pb-2">
+                            Actividades de aprendizaje y evidencias
+                        </h3>
+                        <ul class="text-gris-medio text-sm space-y-2">
+                            <li><strong>Clase práctica e integral:</strong> Resolución grupal o individual de ejercicios y problemas.</li>
+                            <li><strong>Controles virtuales (CV):</strong> Resueltos de manera individual durante las sesiones virtuales (presenciales).</li>
+                            <li><strong>Evaluaciones en línea (EL):</strong> Resueltos de manera asincrónica en el aula virtual.</li>
+                            <li><strong>Actividad colaborativa:</strong> Resolución de problemas reales de la vida cotidiana (aplicada en U2, U3 y U5).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ESQUEMA DE EVALUACIÓN (CRÍTICO) -->
+                <div class="bg-fondo-claro p-6 rounded-lg card-shadow">
+                    <h3 class="text-xl font-extrabold text-gris-oscuro border-b border-rojo-principal pb-2 mb-4">
+                        Desglose de la fórmula de evaluación
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                        <!-- PC1, PC2, PC3 -->
+                        <div class="lg:col-span-2 space-y-3 p-3 bg-white rounded-lg border-l-4 border-rojo-principal">
+                            <h4 class="font-bold text-gris-oscuro">Prácticas calificadas (PC)</h4>
+                            <div class="flex justify-between text-sm"><span>PC1 (Sem. 5)</span> <strong class="text-rojo-principal text-lg">12%</strong></div>
+                            <div class="flex justify-between text-sm"><span>PC2 (Sem. 10)</span> <strong class="text-rojo-principal text-lg">16%</strong></div>
+                            <div class="flex justify-between text-sm"><span>PC3 (Sem. 13)</span> <strong class="text-rojo-principal text-lg">22%</strong></div>
+                            <p class="text-xs text-gris-medio pt-2">Las tres PC son <strong>recuperables</strong>.</p>
+                        </div>
+
+                        <!-- EB1 -->
+                        <div class="p-3 bg-white rounded-lg border-l-4 border-rojo-principal">
+                            <h4 class="font-bold text-gris-oscuro">Evaluación final (EB1)</h4>
+                            <div class="text-center py-2">
+                                <strong class="text-rojo-principal text-4xl">30%</strong>
+                            </div>
+                            <p class="text-sm text-gris-medio">Se toma en la semana 16. Es <strong>recuperable</strong>.</p>
+                        </div>
+
+                        <!-- DD1 BREAKDOWN -->
+                        <div class="p-3 bg-white rounded-lg border-l-4 border-rojo-principal">
+                            <h4 class="font-bold text-gris-oscuro">Eval. de desempeño (DD1)</h4>
+                            <div class="text-center py-2">
+                                <strong class="text-rojo-principal text-4xl">20%</strong>
+                            </div>
+                            <p class="text-xs font-semibold text-gris-oscuro mb-1">Desglose interno (Sem. 15):</p>
+                            <ul class="text-xs text-gris-medio space-y-0.5">
+                                <li>50% Promedio de <strong>controles virtuales (CV)</strong></li>
+                                <li>30% Promedio de <strong>evaluaciones en línea (EL)</strong></li>
+                                <li>20% Evaluación de <strong>razonamiento cuantitativo</strong></li>
+                            </ul>
+                            <p class="text-xs text-red-600 pt-2">¡Es la única nota que <strong>no</strong> es recuperable!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 4: RECURSOS Y REFERENCIAS -->
+            <section class="space-y-6">
+                <h2 class="text-2xl font-bold text-gris-oscuro border-b-2 border-rojo-principal pb-2">
+                    Recursos y referencias obligatorias
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- BIBLIOGRAFÍA -->
+                    <div class="space-y-4 bg-fondo-claro p-6 rounded-lg card-shadow md:col-span-2">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro border-b border-rojo-principal pb-2">
+                            Bibliografía y red de aprendizaje
+                        </h3>
+                        <p class="text-gris-medio text-sm font-semibold">Texto base:</p>
+                        <ul class="text-gris-medio space-y-2 list-disc pl-5 text-sm">
+                            <li>STEWART James, Redlin, Lothar; WATSON, Saleem y ROMO MUÑOZ, Jorge Humberto (2017). <strong>Precálculo: matemáticas para el cálculo</strong>.</li>
+                        </ul>
+                        <p class="text-gris-medio text-sm font-semibold mt-3">Recursos adicionales:</p>
+                         <ul class="text-gris-medio space-y-2 list-disc pl-5 text-sm">
+                            <li>Libro digital de <strong>Matemática Básica (MA420) - Línea Ingeniería</strong>.</li>
+                            <li>Enlace a la lista de lectura de Leganto.</li>
+                            <li>El curso cuenta con una **Red de Aprendizaje** (X. Red de Aprendizaje.JPG).</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- REGLAMENTOS -->
+                    <div class="space-y-4 bg-fondo-claro p-6 rounded-lg card-shadow">
+                        <h3 class="text-xl font-extrabold text-gris-oscuro border-b border-rojo-principal pb-2">
+                            Anexo y reglamentos
+                        </h3>
+                        <p class="text-gris-oscuro text-sm font-semibold mb-2">Todo alumno está obligado a leer y cumplir los siguientes reglamentos:</p>
+                        <ul class="text-sm space-y-2">
+                            <li><a href="https://sica.upc.edu.pe/categoria/reglamentos-upc/sica-reg-26-reglamento-de-disciplina-de-alumnos" target="_blank" class="text-rojo-principal hover:underline">Reglamento de disciplina de alumnos</a></li>
+                            <li><a href="https://sica.upc.edu.pe/categoria/normalizacion/sica-reg-31-reglamento-para-la-prevencion-e-intervencion-en-casos-de-hostiga" target="_blank" class="text-rojo-principal hover:underline">Reglamento de hostigamiento sexual</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CUERPO ACADÉMICO -->
+                <div class="space-y-4 bg-fondo-claro p-6 rounded-lg card-shadow">
+                    <h3 class="text-xl font-extrabold text-gris-oscuro border-b border-rojo-principal pb-2">
+                        Cuerpo académico (profesores)
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-2 text-sm text-gris-oscuro">
+                        <p>Alva Cabrera, Rubén Jesús</p>
+                        <p>Arrue Reyes, Jose</p>
+                        <p>Callo Moscoso, Luis Alberto</p>
+                        <p>Cardenas Zavala, Germain Leonardo</p>
+                        <p>Fernandez Quispe, Nedin Esteban</p>
+                        <p>Figueroa Neyra, Walter Antonio</p>
+                        <p>Medina Martínez, Antonio Marcos</p>
+                        <p>Mejia Delgado, Elias</p>
+                        <p>Muñoz Ramos, Luis Daniel</p>
+                        <p>Novoa Allagual, Armando Alfredo</p>
+                        <p>Perez Armijo, Jhonny Edward</p>
+                        <p>Reynaga Alarcón, Carlos</p>
+                        <p>Ruiz Herrera, Jenniel</p>
+                        <p>Salazar Ching, Carlos Antonio</p>
+                        <p>Serquen Pisfil, Alejandro</p>
+                        <p>Sotomayor Huaman, Monica</p>
+                        <p>Sueros Zarate, Jonathan Abrahan</p>
+                        <p>Tiza Dominguez, Mario Saul</p>
+                        <p>Venegas Palacios, Edgard Kenny</p>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-fondo-claro p-4 text-center text-xs text-gris-medio border-t border-gris-medio">
+            <p>
+                Información extraída y estructurada a partir del Sílabo MA420 (Ciclo 202102) de Ciencias, UPC. por javier Trigoso
+                <a href="https://www.linkedin.com/in/javiertrigosojrtt/" target="_blank" class="inline-flex items-center text-gris-oscuro hover:text-rojo-principal ml-1">
+                    <!-- Icono de LinkedIn SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-3.5 h-3.5 fill-current">
+                        <path d="M416 32H32C14.3 32 0 46.3 0 64v384c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32zM135.5 416H79.7V219.7h55.8V416zm-27.9-224.2c-17.2 0-31.2-14.1-31.2-31.4s14-31.4 31.2-31.4 31.2 14.1 31.2 31.4-14 31.4-31.2 31.4zm233.9 224.2h-55.8V290.7c0-26.6-.5-60.8-37-60.8-37 0-42.8 28.9-42.8 58.8V416h-55.8V219.7h53.7V243c7.8-14.8 24.8-37 50.4-37 54 0 64 33.6 64 77.4V416z"/>
+                    </svg>
+                </a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
